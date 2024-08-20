@@ -1,44 +1,49 @@
-function sortedSquaredArray(arr, S) {
+const hashProcessor = require('./HashProcessor');
+const S = hashProcessor.getS();
+
+/**
+ * Función para obtener un array de los cuadrados ordenados de los elementos de un array dado.
+ * @param {number[]} arr - Array de números.
+ * @param {number} S - Valor de S para determinar el rango máximo.
+ * @returns {number[]} - Array de cuadrados ordenados dentro del rango.
+ */
+function arrayCuadradosOrdenados(arr, S) {
     const n = arr.length;
-    const result = new Array(n).fill(0);
-    let left = 0;
-    let right = n - 1;
-    let index = n - 1;
-    const maxRange = S * 11;
+    const resultado = new Array(n).fill(0);
+    let izquierda = 0;
+    let derecha = n - 1;
+    let indice = n - 1;
+    const rangoMaximo = S * 11;
 
-    while (left <= right) {
-        const leftSquare = arr[left] * arr[left];
-        const rightSquare = arr[right] * arr[right];
+    while (izquierda <= derecha) {
+        const cuadradoIzquierda = arr[izquierda] * arr[izquierda];
+        const cuadradoDerecha = arr[derecha] * arr[derecha];
 
-        if (leftSquare > rightSquare) {
-            if (leftSquare <= maxRange) {
-                result[index] = leftSquare;
-                index--;
+        if (cuadradoIzquierda > cuadradoDerecha) {
+            if (cuadradoIzquierda <= rangoMaximo) {
+                resultado[indice] = cuadradoIzquierda;
+                indice--;
             }
-            left++;
+            izquierda++;
         } else {
-            if (rightSquare <= maxRange) {
-                result[index] = rightSquare;
-                index--;
+            if (cuadradoDerecha <= rangoMaximo) {
+                resultado[indice] = cuadradoDerecha;
+                indice--;
             }
-            right--;
+            derecha--;
         }
     }
 
     // Eliminar valores que exceden el rango máximo
-    return result.filter(num => num !== 0);
+    return resultado.filter(num => num !== 0);
 }
 
 // Ejemplos de uso
 const arr1 = [1, 2, 3, 5, 6, 8, 9];
-const S = 9;
-console.log(sortedSquaredArray(arr1, S)); // [1, 4, 9, 25, 36, 49, 64, 81]
+console.log(arrayCuadradosOrdenados(arr1, S)); // [1, 4, 9, 25, 36, 49, 64, 81]
 
 const arr2 = [-2, -1];
-console.log(sortedSquaredArray(arr2, S)); // [1, 4]
+console.log(arrayCuadradosOrdenados(arr2, S)); // [1, 4]
 
 const arr3 = [-6, -5, 0, 5, 6];
-console.log(sortedSquaredArray(arr3, S)); // [0, 25, 25, 36, 36]
-
-const arr4 = [-10, 10];
-console.log(sortedSquaredArray(arr4, S)); // [100]
+console.log(arrayCuadradosOrdenados(arr3, S)); // [0, 25, 25, 36, 36]
