@@ -1,24 +1,28 @@
-// Extraer el primer número del hash que no sea 0
-const hash = "e09f20be37fa2ee74434c7cf5fc981c1";
-const S = parseInt(hash.match(/[1-9]/)[0]); // Utiliza match para encontrar el primer dígito no cero y parseInt para convertirlo a número
+const hashProcessor = require('./HashProcessor');
+const primerNumeroNoCero = hashProcessor.getS();
 
-// Función para procesar la lista
-function processList(numbers) {
-    // Paso 1: Filtrar dígitos mayores o iguales a S
-    var filteredNumbers = numbers.map(function (num) {
-        var filteredDigits = num.toString().split('').filter(function (digit) { return parseInt(digit) < S; }).join('');
-        return filteredDigits === '' ? NaN : parseInt(filteredDigits, 10); // Convierte la cadena filtrada de vuelta a número o NaN si está vacía
-    }).filter(function (num) { return !isNaN(num); }); // Eliminar valores NaN resultantes de cadenas vacías
+/**
+ * Función para procesar una lista de números.
+ * @param {number[]} numeros - Lista de números a procesar.
+ */
+function procesarLista(numeros) {
+    // Paso 1: Filtrar dígitos menores que primerNumeroNoCero en cada número de la lista
+    const numerosFiltrados = numeros.map(num => {
+        // Convertir el número a cadena, filtrar dígitos menores que primerNumeroNoCero y volver a unir
+        const digitosFiltrados = num.toString().split('').filter(digito => parseInt(digito) < primerNumeroNoCero).join('');
+        // Convertir la cadena filtrada de vuelta a número o NaN si está vacía
+        return digitosFiltrados === '' ? NaN : parseInt(digitosFiltrados, 10);
+    }).filter(num => !isNaN(num)); // Eliminar valores NaN resultantes de cadenas vacías
     
-    // Paso 2: Invertir la lista
-    var reversedNumbers = filteredNumbers.reverse(); // Invierte el orden de los números filtrados
+    // Paso 2: Invertir la lista de números filtrados
+    const numerosInvertidos = numerosFiltrados.reverse();
     
     // Paso 3: Imprimir el resultado
-    console.log(reversedNumbers); // Imprime la lista invertida
+    console.log(numerosInvertidos);
 }
 
 // Ejemplos de uso
-var examples = [
+const ejemplos = [
     [1, 2, 3, 4, 5, 6, 8, 9],
     [10, 20, 30, 40, 59],
     [6],
@@ -28,8 +32,8 @@ var examples = [
     [60, 6, 5, 4, 3, 2, 7, 7, 29, 1]
 ];
 
-// Itera sobre cada ejemplo y procesa la lista
-examples.forEach(function(example) {
-    console.log(`Input: ${example} -> Output:`);
-    processList(example); // Llama a la función processList para cada ejemplo
+// Iterar sobre cada ejemplo y procesar la lista
+ejemplos.forEach(ejemplo => {
+    console.log(`Entrada: ${ejemplo} -> Salida:`);
+    procesarLista(ejemplo); // Llamar a la función procesarLista para cada ejemplo
 });
